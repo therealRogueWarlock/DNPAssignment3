@@ -1,0 +1,137 @@
+﻿@namespace FamilyContentComponent 
+
+@using Models
+@using Blazor_Authentication.Data
+@inject IFamilyManager familyManager
+@inject NavigationManager navigationManager;
+
+<h1>FamilyContent</h1>
+
+<h3>Filter Families</h3>
+<p>
+    Filter by Street Name: <input type="text" @oninput="@((arg) => FilterByStreetName(arg))" style="width:50px"/>
+</p>
+<p>
+    Filter by House Number: <input type="number" @oninput="@((arg) => FilterByHouseNumber(arg))" style="width:50px"/>
+</p>
+
+@if (_familiesToShow == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else if (!_familiesToShow.Any())
+{
+    <p>
+        <em>No families exist, please add families to our beautiful system</em>
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>House number</th>
+            <th>Street name</th>
+            <th>Family name</th>
+            <AuthorizeView>
+                <th>Edit</th>
+                <th>Delete</th>
+            </AuthorizeView>
+        </tr>
+        </thead>
+        <tbody>
+
+        @foreach (var family in _familiesToShow)
+        {
+            <tr>
+                <td>@family.HouseNumber</td>
+                <td>@family.StreetName</td>
+                <td>@family.GetFamilyName()</td>
+
+                <AuthorizeView>
+                    <td>
+                        <button @onclick="@(() => EditFamily(family))">
+                            <i class="oi oi-pencil" style="color:blue"/>
+                        </button>
+                    </td>
+                    <td>
+                        <button @onclick="@(() => RemoveFamily(family))">
+                            <i class="oi oi-trash" style="color:red"/>
+                        </button>
+                    </td>
+                </AuthorizeView>
+                @* <td>@(family.Adults.Any() ? family.Adults.First().LastName : "No adults added")  </td> *@
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    private IList<Family> _families;
+    private IList<Family> _familiesToShow;
+
+
+    private string filterByStreetName;
+    private int? filterByHouseNumber;
+
+    protected override async Task OnInitializedAsync()
+    {
+    //_adults = familyManager.Adults;
+        _families = await familyManager.GetFamilies();
+        _familiesToShow = _families;
+    }
+
+    private void EditFamily(Family family)
+    {
+        navigationManager.NavigateTo($"EditFamily/{family.FamilyId}");
+    }
+
+
+    private void FilterByStreetName(ChangeEventArgs changeEventArgs)
+    {
+        try
+        {
+            filterByStreetName = changeEventArgs.Value.ToString();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Fuck jeg fejlede i filterByStreetName :((");
+        }
+
+        ExecuteFilterFamilies();
+    }
+
+    private void FilterByHouseNumber(ChangeEventArgs changeEventArgs)
+    {
+        filterByHouseNumber = null;
+
+        try
+        {
+            filterByHouseNumber = int.Parse(changeEventArgs.Value.ToString());
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Fuck jeg fejlede i filterByHouseNumber");
+        }
+
+        ExecuteFilterFamilies();
+    }
+
+    private void ExecuteFilterFamilies()
+    {
+        _familiesToShow = _families.Where(t =>
+            (filterByHouseNumber != null && t.HouseNumber == filterByHouseNumber || filterByHouseNumber == null) &&
+            (filterByStreetName != null && t.StreetName.ToLower().Contains(filterByStreetName.ToLower()) || filterByStreetName == null)).ToList();
+    }
+
+    private void RemoveFamily(Family family)
+    {
+        familyManager.RemoveFamily(family);
+    }
+
+}
+

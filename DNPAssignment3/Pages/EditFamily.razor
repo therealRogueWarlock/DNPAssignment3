@@ -1,0 +1,135 @@
+﻿@page "/EditFamily/{FamilyId:int}"
+@using Blazor_Authentication.Data
+@using Models
+@using AdultContentComponent
+@inject IFamilyManager familyManager
+@inject NavigationManager navigationManager
+
+
+<h3>Edit family: @StreetName @HouseNumber</h3>
+
+@if (familyToEdit == null)
+{
+    <em>FAMILY NOT FOUNDNDZNDZ!</em>
+}
+else
+{
+    <EditForm Model="@familyToEdit" OnValidSubmit="@Save">
+        <DataAnnotationsValidator/> <ValidationSummary/>
+        <div class="form-group">
+            Street Name:
+            <br/>
+            <InputTextArea rows="4" @bind-Value="familyToEdit.StreetName"/>
+        </div>
+        <div class="form-group"> House Number:<br/> <InputNumber @bind-Value="familyToEdit.HouseNumber"/> </div>
+        <p class="actions">
+            <button class="btn btn-outline-dark" type="submit">Save</button>
+        </p>
+    </EditForm>
+
+    <EditForm Model="@AdultToAdd" OnValidSubmit="@AddAdult">
+        <DataAnnotationsValidator/> <ValidationSummary/>
+
+        <div class="form-group">
+            First Name:
+            <br/>
+            <InputTextArea rows="1" @bind-Value="AdultToAdd.FirstName"/>
+        </div>
+        <div class="form-group">
+            Last Name:
+            <br/>
+            <InputTextArea rows="1" @bind-Value="AdultToAdd.LastName"/>
+        </div>
+
+        <div class="form-group">
+            Hair color:
+            <br/>
+            <InputTextArea rows="1" @bind-Value="AdultToAdd.HairColor"/>
+        </div>
+
+        <div class="form-group">
+            Eye Color:
+            <br/>
+            <InputTextArea rows="1" @bind-Value="AdultToAdd.EyeColor"/>
+        </div>
+
+
+        <div class="form-group">
+            Age:
+            <br/>
+            <InputNumber @bind-Value="AdultToAdd.Age"/>
+        </div>
+
+        <div class="form-group">
+            Weight:
+            <br/>
+            <InputNumber @bind-Value="AdultToAdd.Weight"/>
+        </div>
+
+        <div class="form-group">
+            Height:
+            <br/>
+            <InputNumber @bind-Value="AdultToAdd.Height"/>
+        </div>
+        <div class="form-group">
+            SEX(what ever you like):
+            <br/>
+            <InputText @bind-Value="AdultToAdd.Sex"/>
+        </div>
+
+        <div class="form-group">
+            Job title:
+            <br/>
+            <InputTextArea rows="1" @bind-Value="AdultToAdd.Job.JobTitle"/>
+        </div>
+
+        <div class="form-group"> Job Salary:<br/> <InputNumber @bind-Value="AdultToAdd.Job.Salary"/> </div>
+
+
+        <p class="actions">
+            <button class="btn btn-outline-dark" type="submit">Add</button>
+        </p>
+
+        <AdultContent _adults="@_adultsInFamily"/>
+
+
+    </EditForm>
+}
+
+@code {
+
+    [Parameter]
+    public int FamilyId { get; set; }
+
+    private string StreetName { get; set; }
+    private int HouseNumber { get; set; }
+
+    private Family familyToEdit;
+    private IList<Adult> _adultsInFamily;
+    private Adult AdultToAdd;
+
+    protected override async Task OnInitializedAsync()
+    {
+        familyToEdit = await familyManager.GetFamily(FamilyId);
+        _adultsInFamily = familyToEdit.Adults;
+        AdultToAdd = new Adult();
+    }
+
+    private void Save()
+    {
+        familyManager.Update();
+        navigationManager.NavigateTo("/Families");
+    }
+
+    private void AddAdult()
+    {
+        if (AdultToAdd != null)
+        {
+            Console.WriteLine($"Adding {AdultToAdd}");
+            familyToEdit.Adults.Add(AdultToAdd);
+            AdultToAdd = new Adult();
+            
+        }
+    }
+
+}
