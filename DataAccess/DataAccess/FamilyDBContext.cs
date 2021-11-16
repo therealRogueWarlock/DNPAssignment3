@@ -15,7 +15,6 @@ namespace DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Job>().HasKey();
             modelBuilder.Entity<User>().HasKey(user => user.UserName);
             modelBuilder.Entity<Interest>().HasKey(interest => interest.Type);
         }
