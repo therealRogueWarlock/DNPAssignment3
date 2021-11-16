@@ -1,4 +1,6 @@
-﻿namespace Blazor_Authentication.model
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Blazor_Authentication.model
 {
     public class User
     {

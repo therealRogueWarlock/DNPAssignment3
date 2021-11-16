@@ -27,7 +27,7 @@ namespace Blazor_Authentication.Data.Impl
 
         public async Task RemoveFamily(int familyId)
         {
-            GetFamilies().Result.Remove(GetFamilies().Result.First(f => f.FamilyId == familyId));
+            GetFamilies().Result.Remove(GetFamilies().Result.First(f => f.Id == familyId));
             _fileContext.SaveChanges();
         }
 
@@ -47,7 +47,7 @@ namespace Blazor_Authentication.Data.Impl
         public async Task<Family> GetFamily(int familyId)
         {
             return _fileContext.Families.FirstOrDefault(family =>
-                family.FamilyId == familyId);
+                family.Id == familyId);
         }
 
         public async Task RemoveAdult(int adultId)
