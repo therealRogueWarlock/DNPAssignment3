@@ -5,7 +5,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DNPAssignement3API\DNPAssignement3API.csproj" />
       <ProjectReference Include="..\Entities\Entities.csproj" />
     </ItemGroup>
 

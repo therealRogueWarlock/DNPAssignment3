@@ -2,57 +2,56 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DataAccess;
 using DNPAssignement3API.Data;
 using FileData;
+using Microsoft.EntityFrameworkCore;
 using Models;
 
 namespace Blazor_Authentication.Data.Impl
 {
     public class FamilyService : IFamilyService
     {
-        private FileContext _fileContext;
-
+        private FamilyDBContext _familyDbContext;
         
-        
-        public FamilyService()
+        public FamilyService(DbContext dbContext)
         {
-            _fileContext = new FileContext();
-            Console.WriteLine("commentar");
+            _familyDbContext = (FamilyDBContext) dbContext;
         }
+        
         public async Task AddFamily(Family family)
         {
-            _fileContext.Families.Add(family);
-            _fileContext.SaveChanges();
+            _familyDbContext.Families.Add(family);
+            await Update();
         }
 
         public async Task RemoveFamily(int familyId)
         {
             GetFamilies().Result.Remove(GetFamilies().Result.First(f => f.Id == familyId));
-            _fileContext.SaveChanges();
+            await Update();
         }
 
         public async Task<IList<Family>> GetFamilies()
         {
-            return _fileContext.Families;
+            return _familyDbContext.Families.ToList();
         }
 
         
         public async Task Update()
         {
-            _fileContext.SaveChanges();
+            await _familyDbContext.SaveChangesAsync();
         }
-        
         
         
         public async Task<Family> GetFamily(int familyId)
         {
-            return _fileContext.Families.FirstOrDefault(family =>
+            return _familyDbContext.Families.FirstOrDefault(family =>
                 family.Id == familyId);
         }
 
         public async Task RemoveAdult(int adultId)
         {
-            foreach (Family family in _fileContext.Families)
+            foreach (Family family in _familyDbContext.Families)
             {
                 Adult adult = family.Adults.FirstOrDefault(adult =>
                     adult.Id == adultId);
@@ -64,14 +63,14 @@ namespace Blazor_Authentication.Data.Impl
                 }
             }
             
-            _fileContext.SaveChanges();
+            _familyDbContext.SaveChanges();
         }
 
         public async Task<IList<Adult>> GetAdults()
         {
             List<Adult> _adults = new();
 
-            foreach (var family in _fileContext.Families)
+            foreach (var family in _familyDbContext.Families)
             {
                 _adults.AddRange(family.Adults);
             }
