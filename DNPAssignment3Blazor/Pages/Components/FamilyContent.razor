@@ -87,6 +87,7 @@ else
 
     private void EditFamily(Family family)
     {
+        Console.WriteLine(family.FamilyId);
         navigationManager.NavigateTo($"EditFamily/{family.FamilyId}");
     }
 
@@ -131,6 +132,7 @@ else
     private void RemoveFamily(Family family)
     {
         familyService.RemoveFamily(family.FamilyId);
+        _familiesToShow.Remove(family);
     }
 
 }

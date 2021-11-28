@@ -25,7 +25,13 @@ namespace Blazor.Data.Impl
 
          public async Task RemoveFamily(int familyId)
          {
-             GetFamilies().Result.Remove(await GetFamily(familyId));
+             Family family = _familyDbContext.Families
+                 .Include(family => family.Adults)
+                 .Include(family1 => family1.Children)
+                 .Include(family1 => family1.Pets).First(f => f.FamilyId == familyId);
+
+             _familyDbContext.Families.Remove(family);
+             
              await _familyDbContext.SaveChangesAsync();
          }
          
@@ -42,24 +48,17 @@ namespace Blazor.Data.Impl
         
         public async Task<Family> GetFamily(int familyId)
         {
-            return _familyDbContext.Families.FirstOrDefault(family =>
-                family.FamilyId == familyId);
+            return 
+                _familyDbContext.Families
+                    .Include(family => family.Adults)
+                    .ThenInclude(adult => adult.Job)
+                    .FirstOrDefault(family => family.FamilyId == familyId);
         }
 
         public async Task RemoveAdult(int adultId)
         {
-            foreach (Family family in _familyDbContext.Families)
-            {
-                Adult adult = family.Adults.FirstOrDefault(adult =>
-                    adult.Id == adultId);
-
-                if (adult != null)
-                {
-                    family.Adults.Remove(adult);
-                    break;
-                }
-            }
-            
+            Adult adultToRemove = await _familyDbContext.Adults.FindAsync(adultId);
+            _familyDbContext.Adults.Remove(adultToRemove);
             _familyDbContext.SaveChanges();
         }
 

@@ -113,7 +113,7 @@ else
     {
         familyToEdit = await familyService.GetFamily(FamilyId);
         _adultsInFamily = familyToEdit.Adults;
-        AdultToAdd = new Adult();
+        AdultToAdd = new Adult {Job = new()};
     }
 
     private void Save()

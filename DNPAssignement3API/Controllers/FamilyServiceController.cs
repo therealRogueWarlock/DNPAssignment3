@@ -176,8 +176,26 @@ namespace DNPAssignement3API.Controllers
             
             
         }
-
         
+        [HttpPatch]
+        [Route("/UpdateAdult")]
+        public async Task<ActionResult> UpdateAdult([FromBody] Adult adult)
+        {
+
+            try
+            {
+                await familyService.UpdateAdult(adult);
+                return Ok($"Adult with id: {adult.Id} was updated");
+
+            }
+            catch (Exception e)
+            {
+
+                Console.WriteLine(e);
+                return StatusCode(500, e.Message);
+
+            }
+        }
 
     }
 }

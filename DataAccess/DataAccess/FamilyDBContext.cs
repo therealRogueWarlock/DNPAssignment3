@@ -22,6 +22,7 @@ namespace Blazor
         {
             modelBuilder.Entity<User>().HasKey(user => user.UserName);
             
+
         }
     }
 }

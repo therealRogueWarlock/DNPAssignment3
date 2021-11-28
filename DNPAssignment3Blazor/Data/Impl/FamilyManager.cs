@@ -68,7 +68,7 @@ namespace Data.Impl
                 "application/json"
             );
             HttpResponseMessage responseMessage = 
-                await client.PatchAsync($"https://localhost:5003/FamilyService/UpdateFamily", content);
+                await client.PatchAsync($"https://localhost:5003/FamilyService", content);
             
             if (!responseMessage.IsSuccessStatusCode)
                 throw new Exception($"Error: {responseMessage.StatusCode}, {responseMessage.ReasonPhrase}");
@@ -126,7 +126,7 @@ namespace Data.Impl
         {
             using HttpClient client = new();
 
-            HttpResponseMessage responseMessage = await client.GetAsync($"https://localhost:5003/FamilyService/adult/{id}");
+            HttpResponseMessage responseMessage = await client.GetAsync($"https://localhost:5003/adult/{id}");
 
             if (!responseMessage.IsSuccessStatusCode)
             {
@@ -155,11 +155,12 @@ namespace Data.Impl
             );
             
             HttpResponseMessage responseMessage = 
-                await client.PatchAsync($"https://localhost:5003/FamilyService/UpdateAdult", content);
+                await client.PatchAsync($"https://localhost:5003/UpdateAdult", content);
             
             if (!responseMessage.IsSuccessStatusCode)
                 throw new Exception($"Error: {responseMessage.StatusCode}, {responseMessage.ReasonPhrase}");
             
         }
+        
     }
 }
