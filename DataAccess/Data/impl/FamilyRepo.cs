@@ -65,6 +65,7 @@ namespace Blazor.Data.Impl
 
         public async Task<IList<Adult>> GetAdults()
         {
+            _familyDbContext.Jobs.ToList().ForEach(job => { Console.WriteLine(job.JobTitle); });
             
             return _familyDbContext.Adults.Include(adult => adult.Job).ToList();
             
