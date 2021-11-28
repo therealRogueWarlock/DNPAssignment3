@@ -1,6 +1,10 @@
+
+using DataAccess;
+using DataAccess.Data.Impl;
 using DNPAssignement3API.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,7 +30,8 @@ namespace DNPAssignement3API
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "DNPAssignement3API", Version = "v1"});
             });
             
-            services.AddSingleton<IFamilyService>();
+            services.AddSingleton<DbContext, FamilyDBContext>();
+            services.AddSingleton<IFamilyService, FamilyService>();
             
         }
 

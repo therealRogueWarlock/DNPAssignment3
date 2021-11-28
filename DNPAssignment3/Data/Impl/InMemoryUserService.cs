@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Blazor_Authentication.model;
+using System.Threading.Tasks;
+using DataAccess.model;
 
-namespace Blazor_Authentication.Data.Impl
+namespace DataAccess.Data.Impl
 {
     public class InMemoryUserService : IUserService
     {
@@ -31,7 +32,7 @@ namespace Blazor_Authentication.Data.Impl
             }.ToList();
         }
 
-        public User ValidateUser(string userName, string password)
+        public async Task<User> ValidateUser(string userName, string password)
         {
             User first = users.FirstOrDefault(user => user.UserName.Equals(userName));
             if (first == null)

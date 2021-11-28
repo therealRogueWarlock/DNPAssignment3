@@ -1,9 +1,10 @@
-﻿using Blazor_Authentication.model;
+﻿using System.Threading.Tasks;
+using DataAccess.model;
 
-namespace Blazor_Authentication.Data
+namespace DataAccess.Data
 {
     public interface IUserService
     {
-        User ValidateUser(string userName, string Password);
+        Task<User> ValidateUser(string userName, string Password);
     }
 }

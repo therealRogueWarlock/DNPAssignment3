@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Blazor_Authentication.Data;
+using DataAccess.Data;
 using Models;
 
 namespace Data.Impl
@@ -31,7 +31,7 @@ namespace Data.Impl
         public async Task RemoveFamily(Family family)
         {
             using HttpClient client = new();
-            HttpResponseMessage responseMessage = await client.DeleteAsync($"https://localhost:5003/FamilyService/{family.Id}");
+            HttpResponseMessage responseMessage = await client.DeleteAsync($"https://localhost:5003/FamilyService/{family.FamilyId}");
             if (!responseMessage.IsSuccessStatusCode)
                 throw new Exception($"Error: {responseMessage.StatusCode}, {responseMessage.ReasonPhrase}");
         }

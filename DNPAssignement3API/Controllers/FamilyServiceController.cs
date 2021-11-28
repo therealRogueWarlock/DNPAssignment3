@@ -70,7 +70,7 @@ namespace DNPAssignement3API.Controllers
             {
                 await familyService.AddFamily(family);
 
-                return Created($"/{family.Id}", family);
+                return Created($"/{family.FamilyId}", family);
 
             }
             catch (Exception e)

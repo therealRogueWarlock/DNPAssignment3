@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Blazor_Authentication.model
+namespace DataAccess.model
 {
     public class User
     {

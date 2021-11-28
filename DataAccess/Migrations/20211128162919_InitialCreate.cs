@@ -1,8 +1,8 @@
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccess.Migrations
 {
-    public partial class InitialCreation : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -35,7 +35,7 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "User",
+                name: "Users",
                 columns: table => new
                 {
                     UserName = table.Column<string>(type: "TEXT", nullable: false),
@@ -48,7 +48,7 @@ namespace DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.UserName);
+                    table.PrimaryKey("PK_Users", x => x.UserName);
                 });
 
             migrationBuilder.CreateTable(
@@ -116,13 +116,15 @@ namespace DataAccess.Migrations
                 name: "Interest",
                 columns: table => new
                 {
-                    Type = table.Column<string>(type: "TEXT", nullable: false),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Type = table.Column<string>(type: "TEXT", nullable: true),
                     Description = table.Column<string>(type: "TEXT", nullable: true),
                     ChildId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Interest", x => x.Type);
+                    table.PrimaryKey("PK_Interest", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Interest_Child_ChildId",
                         column: x => x.ChildId,
@@ -203,7 +205,7 @@ namespace DataAccess.Migrations
                 name: "Pet");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Job");

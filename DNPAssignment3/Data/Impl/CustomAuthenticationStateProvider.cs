@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Blazor_Authentication.model;
+using DataAccess.model;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 
-namespace Blazor_Authentication.Data.Impl
+namespace DataAccess.Data.Impl
 {
     public class CustomAuthenticationStateProvider : AuthenticationStateProvider
     {
@@ -42,7 +42,7 @@ namespace Blazor_Authentication.Data.Impl
             return await Task.FromResult(new AuthenticationState(cachedClaimsPrincipal));
         }
 
-        public void ValidateLogin(string username, string password)
+        public async Task ValidateLogin(string username, string password)
         {
             Console.WriteLine("Validating log in");
             if (string.IsNullOrEmpty(username)) throw new Exception("Enter username");
@@ -50,7 +50,7 @@ namespace Blazor_Authentication.Data.Impl
             ClaimsIdentity identity = new ClaimsIdentity();
             try
             {
-                User user = userService.ValidateUser(username, password);
+                User user = await userService.ValidateUser(username, password);
                 identity = SetupClaimsForUser(user);
                 string serialisedData = JsonSerializer.Serialize(user);
                 jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", serialisedData);

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Blazor_Authentication.Data.Impl;
+using DataAccess.Data.Impl;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 

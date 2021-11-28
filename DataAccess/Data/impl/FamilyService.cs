@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DataAccess;
 using DNPAssignement3API.Data;
 using Microsoft.EntityFrameworkCore;
 using Models;
 
-namespace Blazor_Authentication.Data.Impl
+namespace DataAccess.Data.Impl
 {
     public class FamilyService : IFamilyService
     {
@@ -25,7 +24,7 @@ namespace Blazor_Authentication.Data.Impl
 
         public async Task RemoveFamily(int familyId)
         {
-            GetFamilies().Result.Remove(GetFamilies().Result.First(f => f.Id == familyId));
+            GetFamilies().Result.Remove(GetFamilies().Result.First(f => f.FamilyId == familyId));
             await Update();
         }
 
@@ -44,7 +43,7 @@ namespace Blazor_Authentication.Data.Impl
         public async Task<Family> GetFamily(int familyId)
         {
             return _familyDbContext.Families.FirstOrDefault(family =>
-                family.Id == familyId);
+                family.FamilyId == familyId);
         }
 
         public async Task RemoveAdult(int adultId)

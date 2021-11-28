@@ -7,7 +7,7 @@ namespace Models
 {
     public class Family
     {
-        public int Id { get; set; }
+        public int FamilyId { get; set; }
         
         [Required, MaxLength(10)]
         public string StreetName { get; set; }
@@ -43,6 +43,6 @@ namespace Models
             return familyName;
         }
         
-
+        
     }
 }

@@ -3,14 +3,16 @@ using System;
 using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(FamilyDBContext))]
-    partial class FamilyDBContextModelSnapshot : ModelSnapshot
+    [Migration("20211128162919_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,7 +141,7 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Models.Family", b =>
                 {
-                    b.Property<int>("FamilyId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -151,7 +153,7 @@ namespace DataAccess.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("TEXT");
 
-                    b.HasKey("FamilyId");
+                    b.HasKey("Id");
 
                     b.ToTable("Families");
                 });

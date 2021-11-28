@@ -1,7 +1,7 @@
 ﻿@namespace FamilyContentComponent 
 
 @using Models
-@using Blazor_Authentication.Data
+@using DataAccess.Data
 @using Data
 @inject IFamilyManager familyManager
 @inject NavigationManager navigationManager;
@@ -88,7 +88,7 @@ else
 
     private void EditFamily(Family family)
     {
-        navigationManager.NavigateTo($"EditFamily/{family.Id}");
+        navigationManager.NavigateTo($"EditFamily/{family.FamilyId}");
     }
 
 
