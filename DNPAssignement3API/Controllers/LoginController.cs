@@ -1,7 +1,8 @@
 using System;
 using System.Threading.Tasks;
+using Blazor.Data;
 using Data;
-using DataAccess.model;
+using Blazor.model;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Controllers
@@ -28,7 +29,7 @@ namespace Controllers
             try
             {
                 
-                User user = _userService.ValidateUser(userInfo.UserName,userInfo.Password);
+                User user = await _userService.ValidateUser(userInfo.UserName,userInfo.Password);
                 return Ok(user);
                 
             }

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DNPAssignement3API.Data;
+using Data;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 
@@ -60,8 +60,7 @@ namespace DNPAssignement3API.Controllers
             
         }
 
-
-
+        
         [HttpPost]
         public async Task<ActionResult<Family>> AddFamily([FromBody] Family family)
         {
@@ -109,17 +108,13 @@ namespace DNPAssignement3API.Controllers
 
             try
             {
-                await familyService.Update();
-                return null;
-
+                await familyService.UpdateFamily(family);
+                return family;
             }
             catch (Exception e)
             {
-
                 Console.WriteLine(e);
                 return StatusCode(500, e.Message);
-
-
             }
         }
         
@@ -147,8 +142,8 @@ namespace DNPAssignement3API.Controllers
         {
             try
             {
-                Console.WriteLine();
                 IList<Adult> adult = await familyService.GetAdults();
+                
                 return Ok(adult);
 
             }

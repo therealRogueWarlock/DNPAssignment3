@@ -1,7 +1,8 @@
 
-using DataAccess;
-using DataAccess.Data.Impl;
-using DNPAssignement3API.Data;
+using Blazor;
+using Blazor.Data;
+using Blazor.Data.Impl;
+using Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -31,8 +32,9 @@ namespace DNPAssignement3API
             });
             
             services.AddSingleton<DbContext, FamilyDBContext>();
-            services.AddSingleton<IFamilyService, FamilyService>();
-            
+            services.AddScoped<IFamilyService, FamilyRepo>();
+            services.AddScoped<IUserService, UserService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

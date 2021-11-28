@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entiti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{A524D9CC-9924-4911-AFB8-E67ADE0690C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNPAssignment3Blazor", "DNPAssignment3Blazor\DNPAssignment3Blazor.csproj", "{3386CD65-BD51-4C17-8F93-5E319A41FC7F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{A524D9CC-9924-4911-AFB8-E67ADE0690C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A524D9CC-9924-4911-AFB8-E67ADE0690C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A524D9CC-9924-4911-AFB8-E67ADE0690C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3386CD65-BD51-4C17-8F93-5E319A41FC7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3386CD65-BD51-4C17-8F93-5E319A41FC7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3386CD65-BD51-4C17-8F93-5E319A41FC7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3386CD65-BD51-4C17-8F93-5E319A41FC7F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

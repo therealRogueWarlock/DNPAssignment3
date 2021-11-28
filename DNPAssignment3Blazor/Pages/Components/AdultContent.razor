@@ -1,0 +1,161 @@
+﻿@namespace AdultContentComponent 
+
+@using Models
+@using Blazor.Data
+@using Data
+@inject IFamilyService familyService
+@inject NavigationManager navigationManager
+
+
+@if (_adults == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else if (!_adults.Any())
+{
+    <p>
+        <em>No adults exist, please add adults to our beautiful system</em>
+    </p>
+}
+else
+{
+    <h1>AdultContent</h1>
+    
+    <h3>Filter Adults</h3>
+    <p>
+        Filter by Family Name: <input type="text" @oninput="@((arg) => FilterByFamilyName(arg))" style="width:50px"/>
+    </p>
+    <p>
+        Filter by First Name: <input type="text" @oninput="@((arg) => FilterByFirstName(arg))" style="width:50px"/>
+    </p>
+    <p>
+        Filter by Job Name: <input type="text" @oninput="@((arg) => FilterByJobTitle(arg))" style="width:50px"/>
+    </p>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>JobTitle</th>
+            <th>First name</th>
+            <th>Family name</th>
+            <AuthorizeView>
+                <th>Edit</th>
+                <th>Delete</th>
+            </AuthorizeView>
+        </tr>
+        </thead>
+        <tbody>
+
+
+        @foreach (var adult in _adultsToShow)
+        {
+            <tr>
+                <td>@adult.Job.JobTitle</td>
+                <td>@adult.FirstName</td>
+                <td>@adult.LastName</td>
+                <AuthorizeView>
+                    <td>
+                        <button @onclick="@(() => EditAdult(adult.Id))">
+                            <i class="oi oi-pencil" style="color:blue"/>
+                        </button>
+                    </td>
+                    <td>
+                        <button @onclick="@(() => RemoveAdult(adult.Id))">
+                            <i class="oi oi-trash" style="color:red"/>
+                        </button>
+                    </td>
+                </AuthorizeView>
+            </tr>
+        }
+
+        </tbody>
+    </table>
+}
+
+@code {
+    
+    [Parameter]
+    public IList<Adult> _adults { get; set;}
+    
+    public IList<Adult> _adultsToShow { get; set;}
+
+    private string filterByJobTitle;
+    private string filterByFirstName;
+    private string filterByLastName;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _adultsToShow = _adults;
+    }
+
+    private void FilterByJobTitle(ChangeEventArgs changeEventArgs)
+    {
+        try
+        {
+            filterByJobTitle = changeEventArgs.Value.ToString();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Fuck jeg fejlede i FilterByJobTitle :((");
+        }
+
+        ExecuteFilterAdults();
+    }
+
+    private void FilterByFirstName(ChangeEventArgs changeEventArgs)
+    {
+        try
+        {
+            filterByFirstName = changeEventArgs.Value.ToString();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Fuck jeg fejlede i FilterByFirstName :((");
+        }
+
+        ExecuteFilterAdults();
+    }
+
+    private void FilterByFamilyName(ChangeEventArgs changeEventArgs)
+    {
+        try
+        {
+            filterByLastName = changeEventArgs.Value.ToString();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Fuck jeg fejlede i FilterByFamilyName :((");
+        }
+
+        ExecuteFilterAdults();
+    }
+
+
+    private void ExecuteFilterAdults()
+    {
+        _adultsToShow = _adults.Where(f =>
+            (filterByLastName != null && f.LastName.ToLower().Contains(filterByLastName.ToLower()) || filterByLastName == null) &&
+            (filterByFirstName != null && f.FirstName.ToLower().Contains(filterByFirstName.ToLower()) || filterByFirstName == null) &&
+            (filterByJobTitle != null && f.Job.JobTitle.ToLower().Contains(filterByJobTitle.ToLower()) || filterByJobTitle == null)).ToList();
+    }
+
+    private void EditAdult(int adultId)
+    {
+        navigationManager.NavigateTo($"EditAdult/{adultId}");
+    }
+
+    private void RemoveAdult(int adultId)
+    {
+        familyService.RemoveAdult(adultId);
+        
+        Adult adult = _adults.FirstOrDefault(adult =>
+            adult.Id == adultId);
+        
+        _adults.Remove(adult);
+        
+    }
+
+    
+}

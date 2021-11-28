@@ -1,0 +1,22 @@
+﻿@page "/Adults"
+@inject IFamilyService familyService
+@inherits LayoutComponentBase
+@using AdultContentComponent
+@using Blazor.Data
+@using Data
+@using Models
+
+<h3>Adults</h3>
+
+<AdultContent _adults="@_adults"/>
+
+@code {
+    
+    private IList<Adult> _adults;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _adults = await familyService.GetAdults();
+    }
+    
+}

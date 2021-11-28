@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DataAccess.model;
+using Blazor.model;
 
-namespace DataAccess.Data.Impl
+namespace Blazor.Data.Impl
 {
     public class InMemoryUserService : IUserService
     {
