@@ -81,7 +81,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-    //_adults = familyManager.Adults;
         _families = await familyService.GetFamilies();
         _familiesToShow = _families;
     }

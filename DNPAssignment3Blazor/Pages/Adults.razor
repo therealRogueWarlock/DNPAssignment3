@@ -17,6 +17,9 @@
     protected override async Task OnInitializedAsync()
     {
         _adults = await familyService.GetAdults();
+
+        Console.WriteLine(_adults.Count);
+        
     }
     
 }

@@ -7,12 +7,6 @@ namespace Models
         
         [Required]
         public Job Job { get; set; }
-
-
-        public Adult()
-        {
-            Job = new();
-        }
         
     }
 }

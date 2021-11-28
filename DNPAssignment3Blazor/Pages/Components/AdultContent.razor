@@ -49,7 +49,7 @@ else
         <tbody>
 
 
-        @foreach (var adult in _adultsToShow)
+        @foreach (var adult in _adults)
         {
             <tr>
                 <td>@adult.Job.JobTitle</td>
@@ -79,7 +79,7 @@ else
     [Parameter]
     public IList<Adult> _adults { get; set;}
     
-    public IList<Adult> _adultsToShow { get; set;}
+   // public IList<Adult> _adultsToShow { get; set;}
 
     private string filterByJobTitle;
     private string filterByFirstName;
@@ -87,7 +87,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        _adultsToShow = _adults;
+        
     }
 
     private void FilterByJobTitle(ChangeEventArgs changeEventArgs)
@@ -135,7 +135,7 @@ else
 
     private void ExecuteFilterAdults()
     {
-        _adultsToShow = _adults.Where(f =>
+        _adults = _adults.Where(f =>
             (filterByLastName != null && f.LastName.ToLower().Contains(filterByLastName.ToLower()) || filterByLastName == null) &&
             (filterByFirstName != null && f.FirstName.ToLower().Contains(filterByFirstName.ToLower()) || filterByFirstName == null) &&
             (filterByJobTitle != null && f.Job.JobTitle.ToLower().Contains(filterByJobTitle.ToLower()) || filterByJobTitle == null)).ToList();

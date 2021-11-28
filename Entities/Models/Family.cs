@@ -22,14 +22,11 @@ namespace Models
         public List<Pet> Pets { get; set; }
 
         
-        public Family()
-        {
-            Adults = new List<Adult>();
-        }
         
         public string GetFamilyName()
         {
             string familyName = "";
+            
             if (Adults.Any())
             {
                 foreach (Adult adult in Adults)

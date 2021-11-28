@@ -31,7 +31,7 @@ namespace Blazor.Data.Impl
          
         public async Task<IList<Family>> GetFamilies()
         {
-            return _familyDbContext.Families.ToList();
+            return _familyDbContext.Families.Include(family => family.Adults).ToList();
         }
         
         public async Task UpdateFamily(Family family)
@@ -65,10 +65,7 @@ namespace Blazor.Data.Impl
 
         public async Task<IList<Adult>> GetAdults()
         {
-            _familyDbContext.Jobs.ToList().ForEach(job => { Console.WriteLine(job.JobTitle); });
-            
-            return _familyDbContext.Adults.Include(adult => adult.Job).ToList();
-            
+            return await _familyDbContext.Adults.Include(adult => adult.Job).ToListAsync();
         }
 
         public async Task<Adult> GetAdult(int id)
@@ -79,23 +76,13 @@ namespace Blazor.Data.Impl
 
         public async Task AddAdult(Adult adult)
         {
-            GetAdults().Result.Add(adult);
+            _familyDbContext.Adults.Add(adult);
+            await _familyDbContext.SaveChangesAsync();
         }
         
         public async Task UpdateAdult(Adult adultToUpdate)
         {
-            foreach (Family family in _familyDbContext.Families)
-            {
-                Adult adult = family.Adults.FirstOrDefault(a =>
-                    a.Id == adultToUpdate.Id);
-
-                if (adult != null)
-                {
-                    family.Adults.Remove(adult);
-                    family.Adults.Add(adultToUpdate);
-                    break;
-                }
-            }
+            _familyDbContext.Adults.Update(adultToUpdate);
             _familyDbContext.SaveChanges();
         }
         
