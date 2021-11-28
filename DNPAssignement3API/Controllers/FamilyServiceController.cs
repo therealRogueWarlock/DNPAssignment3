@@ -8,7 +8,6 @@ using Models;
 namespace DNPAssignement3API.Controllers
 {
     
-    
     [ApiController]
     [Route("[controller]")]
     public class FamilyServiceController : ControllerBase
@@ -41,7 +40,7 @@ namespace DNPAssignement3API.Controllers
 
         [HttpDelete]
         [Route("{familyId:int}")]
-        public async Task<ActionResult> removeFamily([FromRoute] int familyId )
+        public async Task<ActionResult> RemoveFamily([FromRoute] int familyId )
         {
 
             try

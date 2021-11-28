@@ -1,23 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Blazor_Authentication.Data;
 using Models;
 
-namespace Blazor_Authentication.Data.Impl
+namespace Data.Impl
 {
     public class FamilyManager : IFamilyManager
     {
-        public Task AddFamily(Family family)
+        public async Task AddFamily(Family family)
         {
-            throw new NotImplementedException();
+            using HttpClient client = new();
+
+            string familyAsJson = JsonSerializer.Serialize(family);
+
+            StringContent content = new StringContent(
+            familyAsJson,
+            Encoding.UTF8,
+            "application/json"
+                );
+            HttpResponseMessage responseMessage = await client.PostAsync($"https://localhost:5003/FamilyService", content);
+            if (!responseMessage.IsSuccessStatusCode)
+                throw new Exception($"Error: {responseMessage.StatusCode}, {responseMessage.ReasonPhrase}");
+
         }
 
-        public Task RemoveFamily(Family family)
+        public async Task RemoveFamily(Family family)
         {
-            throw new NotImplementedException();
+            using HttpClient client = new();
+            HttpResponseMessage responseMessage = await client.DeleteAsync($"https://localhost:5003/FamilyService/{family.Id}");
+            if (!responseMessage.IsSuccessStatusCode)
+                throw new Exception($"Error: {responseMessage.StatusCode}, {responseMessage.ReasonPhrase}");
         }
 
         public async Task<IList<Family>> GetFamilies()
@@ -40,29 +56,108 @@ namespace Blazor_Authentication.Data.Impl
             
         }
 
-        public Task Update()
+        public async Task UpdateFamily(Family family)
         {
-            throw new NotImplementedException();
+            using HttpClient client = new();
+
+            string familyAsJson = JsonSerializer.Serialize(family); 
+
+            StringContent content = new StringContent(
+                familyAsJson,
+                Encoding.UTF8,
+                "application/json"
+            );
+            HttpResponseMessage responseMessage = 
+                await client.PatchAsync($"https://localhost:5003/FamilyService/UpdateFamily", content);
+            
+            if (!responseMessage.IsSuccessStatusCode)
+                throw new Exception($"Error: {responseMessage.StatusCode}, {responseMessage.ReasonPhrase}");
         }
 
-        public Task<Family> GetFamily(int familyId)
+        public async Task<Family> GetFamily(int familyId)
         {
-            throw new NotImplementedException();
+            using HttpClient client = new();
+
+            HttpResponseMessage responseMessage = await client.GetAsync($"https://localhost:5003/FamilyService/{familyId}");
+
+            if (!responseMessage.IsSuccessStatusCode)
+                throw new Exception($"{responseMessage.StatusCode}, {responseMessage.ReasonPhrase}");
+
+            string result = await responseMessage.Content.ReadAsStringAsync();
+
+            Family family = JsonSerializer.Deserialize<Family>(result, new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            });
+
+            return family;
         }
 
-        public Task RemoveAdult(int adultId)
+        public async Task RemoveAdult(int adultId)
         {
-            throw new NotImplementedException();
+            using HttpClient client = new();
+            HttpResponseMessage responseMessage = await client.DeleteAsync($"https://localhost:5003/FamilyService/adult/{adultId}");
+            if (!responseMessage.IsSuccessStatusCode)
+                throw new Exception($"Error: {responseMessage.StatusCode}, {responseMessage.ReasonPhrase}");
         }
 
-        public Task<IList<Adult>> GetAdults()
+        public async Task<IList<Adult>> GetAdults()
         {
-            throw new NotImplementedException();
+            using HttpClient client = new();
+
+            HttpResponseMessage responseMessage = await client.GetAsync("https://localhost:5003/FamilyService/adults");
+
+            if (!responseMessage.IsSuccessStatusCode)
+                throw new Exception($"{responseMessage.StatusCode}, {responseMessage.ReasonPhrase}");
+
+            string result = await responseMessage.Content.ReadAsStringAsync();
+
+            IList<Adult> adults = JsonSerializer.Deserialize<IList<Adult>>(result, new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            });
+        
+            return adults;
         }
 
-        public Task<Adult> GetAdult(int id)
+        public async Task<Adult> GetAdult(int id)
         {
-            throw new NotImplementedException();
+            using HttpClient client = new();
+
+            HttpResponseMessage responseMessage = await client.GetAsync($"https://localhost:5003/FamilyService/adult/{id}");
+
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                throw new Exception($"{responseMessage.StatusCode}, {responseMessage.ReasonPhrase}");
+            }
+
+            string result = await responseMessage.Content.ReadAsStringAsync();
+
+            Adult adult = JsonSerializer.Deserialize<Adult>(result, new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            });
+
+            return adult;
+        }
+
+        public async Task UpdateAdult(Adult adult)
+        {
+            using HttpClient client = new();
+
+            string adultAsJson = JsonSerializer.Serialize(adult); 
+            StringContent content = new StringContent(
+                adultAsJson,
+                Encoding.UTF8,
+                "application/json"
+            );
+            
+            HttpResponseMessage responseMessage = 
+                await client.PatchAsync($"https://localhost:5003/FamilyService/UpdateAdult", content);
+            
+            if (!responseMessage.IsSuccessStatusCode)
+                throw new Exception($"Error: {responseMessage.StatusCode}, {responseMessage.ReasonPhrase}");
+            
         }
     }
 }

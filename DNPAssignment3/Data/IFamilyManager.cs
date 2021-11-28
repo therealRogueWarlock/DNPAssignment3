@@ -2,14 +2,14 @@
 using System.Threading.Tasks;
 using Models;
 
-namespace Blazor_Authentication.Data
+namespace Data
 {
     public interface IFamilyManager
     {
         Task AddFamily(Family family);
         Task RemoveFamily(Family family);
         Task<IList<Family>> GetFamilies();
-        Task Update();
+        Task UpdateFamily(Family family);
         Task<Family> GetFamily(int familyId);
 
         
@@ -17,6 +17,6 @@ namespace Blazor_Authentication.Data
         Task RemoveAdult(int adultId);
         Task<IList<Adult>> GetAdults();
         Task<Adult> GetAdult(int id);
-        
+        Task UpdateAdult(Adult adult);
     }
 }

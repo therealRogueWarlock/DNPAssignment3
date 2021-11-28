@@ -2,6 +2,7 @@
 @using Blazor_Authentication.Data
 @using Models
 @using AdultContentComponent
+@using Data
 @inject IFamilyManager familyManager
 @inject NavigationManager navigationManager
 
@@ -117,7 +118,7 @@ else
 
     private void Save()
     {
-        familyManager.Update();
+        familyManager.UpdateFamily(familyToEdit);
         navigationManager.NavigateTo("/Families");
     }
 
