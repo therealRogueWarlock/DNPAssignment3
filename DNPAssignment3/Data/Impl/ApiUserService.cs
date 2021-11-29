@@ -11,7 +11,7 @@ namespace Data.Impl
 {
     public class ApiUserService : IUserService
     {
-        
+        private readonly string ROOT = "https://localhost:5003";
         public async Task<User> ValidateUser(string userName, string Password)
         {
             
@@ -30,7 +30,7 @@ namespace Data.Impl
             );
             
             HttpResponseMessage responseMessage = 
-                await client.PostAsync($"https://localhost:5003/Login", content);
+                await client.PostAsync($"{ROOT}/Login", content);
             
             if (!responseMessage.IsSuccessStatusCode)
                 throw new Exception($"Error: {responseMessage.StatusCode}, {responseMessage.ReasonPhrase}");
